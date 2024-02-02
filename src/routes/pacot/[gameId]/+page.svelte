@@ -4,9 +4,9 @@
 	import { loadUserOrLogout, user, userId } from '$lib/state/general';
 	import { neutralToast } from '$lib/ts/toasts';
 	import { WS_BE_URL } from '$lib/ts/wsConn';
-	import { onMount } from 'svelte';
+	import { onDestroy, onMount } from 'svelte';
 	import DiceApp from '$lib/3d/DiceApp.svelte';
-	import { diceAmount } from '$lib/state/dice';
+	import { diceAmount, gameState, resetDiceState } from '$lib/state/dice';
 	import Card from '$lib/shadcn/ui/card/card.svelte';
 	import { Button } from '$lib/shadcn/ui/button';
 
@@ -20,6 +20,7 @@
 	const handleGameWsMessage = (e: MessageEvent) => {
 		try {
 			const msg: WsGameMessage = JSON.parse(e.data);
+			console.log(msg);
 			switch (msg.k) {
 				case 'online_players':
 					onlinePlayers = msg.d;
@@ -29,6 +30,9 @@
 					game = msg.d;
 					neutralToast('⏱️ ' + game.st + ' ⏱️');
 					const damount = game.pls.find((x) => x.p_name === $user?.player_name)?.n_dice;
+
+					if (msg.d.st === 'turnStart') gameState.set('start');
+
 					if (damount) $diceAmount = damount;
 					break;
 
@@ -81,6 +85,10 @@
 			if (error instanceof Error) console.error(error.message);
 		}
 	});
+
+	onDestroy(() => {
+		resetDiceState();
+	});
 </script>
 
 <main class="relative">
@@ -100,7 +108,7 @@
 		</div>
 
 		{#if game}
-			<GameControls bind:game bind:bidMessage></GameControls>
+			<GameControls bind:game></GameControls>
 		{/if}
 	{/if}
 </main>

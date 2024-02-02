@@ -119,7 +119,17 @@
 			<Button on:click={rollDice3D}>Roll {$diceAmount} Dice</Button>
 		{/if}
 
-		<h3 class="h3">{bidMessage}</h3>
+		{#if game.cb.bid[1] > 0}
+			<h3 class="h3 my-auto flex justify-center space-x-2">
+				{bidMessage}
+				<span>{game.cb.pn} Bids {game.cb.bid[0]} x</span>
+				<img
+					class="h-9 w-9 rounded-sm border border-primary-foreground object-cover shadow-lg"
+					alt="bid_dice"
+					src="/diceFaces/{game.cb.bid[1]}.png"
+				/>
+			</h3>
+		{/if}
 	</div>
 </div>
 

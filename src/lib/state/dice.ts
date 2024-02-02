@@ -13,6 +13,13 @@ export const diceAmount = persisted<number>('po_diceamount', 5);
 export const rollResult = persisted<RollResult[]>('po_dicerollresult', []);
 export const diceConfig = persisted<DiceConfig[] | null>('po_diceconfig', null);
 
+export const resetDiceState = () => {
+	gameState.set('start');
+	diceAmount.set(5);
+	rollResult.set([]);
+	diceConfig.set(null);
+};
+
 export const rollDice3D = () => {
 	gameState.set('play');
 	rollResult.set([]);
