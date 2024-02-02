@@ -1,0 +1,8 @@
+<script lang="ts">
+	import { Slider } from '$lib/shadcn/ui/slider';
+	export let min = 0;
+	export let max = 100;
+	export let value: number[] | undefined;
+</script>
+
+<Slider bind:value bind:max bind:min step={1} />
