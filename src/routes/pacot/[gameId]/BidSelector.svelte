@@ -4,16 +4,16 @@
 	import { createEventDispatcher } from 'svelte';
 	import DiceNumSelector from './DiceNumSelector.svelte';
 	import NumSelect from './NumSelect.svelte';
-	import { error } from '@sveltejs/kit';
 	import { errorToast } from '$lib/ts/toasts';
 	const dispatch = createEventDispatcher();
 
 	export let min: number;
 	export let max: number;
-	let amount = [0];
-	let diceNumber: number | null = null;
+	export let initialBid: [number, number];
+	let amount = [initialBid[0]];
+	let diceNumber: number = initialBid[1];
 
-	$: disabled = diceNumber === null;
+	$: disabled = diceNumber <= 0;
 
 	const confirmBid = () => {
 		if (diceNumber === null) return errorToast('Select a Dice First');
@@ -42,7 +42,7 @@
 			</h3>
 		</div>
 		<NumSelect {max} {min} bind:value={amount}></NumSelect>
-		<DiceNumSelector bind:selected={diceNumber}></DiceNumSelector>
+		<DiceNumSelector currentDiceAmount={initialBid[1]} bind:selected={diceNumber}></DiceNumSelector>
 
 		<div class="flex justify-center">
 			<Button on:click={confirmBid} {disabled} size="lg">Confirm Bid</Button>

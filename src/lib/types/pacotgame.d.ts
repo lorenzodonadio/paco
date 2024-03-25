@@ -9,6 +9,11 @@ type WsGameStChange = {
 	d: PacotGamePublic;
 };
 
+type WsDiceRoll = {
+	k: 'dice_roll';
+	d: UserDataPub;
+};
+
 type WsNewBid = {
 	k: 'new_bid';
 	d: PacotGamePublic;
@@ -44,7 +49,8 @@ type WsGameMessage =
 	| WsLostDice
 	| WsLostPlayer
 	| WsTurnEnd
-	| WsGameEnd;
+	| WsGameEnd
+	| WsDiceRoll;
 
 type PacotPlayer = {
 	p_name: string;

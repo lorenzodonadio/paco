@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { diceAmount, diceConfig, groupDiceByFaceUp, rollResult } from '$lib/state/dice';
+	import { groupDiceByFaceUp, rollResult } from '$lib/state/dice';
 </script>
 
 <div class="diceResult">

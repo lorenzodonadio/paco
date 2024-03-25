@@ -44,6 +44,7 @@
 		});
 
 		if (!res.ok) errorToast(await res.text());
+		showBid = false;
 	};
 
 	const handleRoll = async (roll: number[]) => {
@@ -91,17 +92,20 @@
 		});
 		if (!res.ok) errorToast(await res.text());
 	};
+
+	console.log($gameState, game.st);
 </script>
 
 <div class="absolute left-0 top-0">
 	{#if $user}
 		<div class="flex justify-center" style="width: 100vw;">
-			<Card>
-				<h4 class="h4 text-primary">Hello {$user.player_name} - {$user.user_name}</h4>
-				{#if game && game.cp === $user?.player_name}
-					<h3 class="h3 text-destructive-foreground">Your Turn ⏱️⏱️</h3>
+			<div class="text-center">
+				<!-- <h4 class="h4 text-primary">Hello {$user.player_name} - {$user.user_name}</h4> -->
+
+				{#if game && game.cp === $user?.player_name && $gameState === 'finish'}
+					<h3 class="h3 pt-2 text-destructive-foreground">Your Turn ⏱️⏱️</h3>
 				{/if}
-			</Card>
+			</div>
 		</div>
 	{/if}
 	<div class="p-1">
@@ -114,9 +118,16 @@
 		{/if}
 	</div>
 
-	<div class="flex justify-center space-y-4 py-6">
+	<div class="flex justify-center space-y-4 py-10">
 		{#if $gameState === 'start'}
-			<Button on:click={rollDice3D}>Roll {$diceAmount} Dice</Button>
+			<div class="mx-auto space-y-4 text-center">
+				<h3 class="h3">Start of the round!</h3>
+				<Button on:click={rollDice3D} size="lg"
+					><span class="text-lg">
+						Roll {$diceAmount} Dice
+					</span>
+				</Button>
+			</div>
 		{/if}
 
 		{#if game.cb.bid[1] > 0}
@@ -133,26 +144,31 @@
 	</div>
 </div>
 
-<div class="absolute bottom-0" style="width: 100vw;">
+<div class="absolute bottom-4" style="width: 100vw;">
 	{#if showBid}
 		{#key game}
 			<BidSelector
 				on:bid={(e) => handleMyBid(e.detail)}
-				min={Math.floor(game.cb.bid[0] / 2)}
+				min={Math.max(Math.floor(game.cb.bid[0] / 2), 1)}
 				max={game.np * 5}
+				initialBid={game.cb.bid}
 			></BidSelector>
 		{/key}
 	{/if}
 
-	<div class="flex justify-center space-x-4">
-		<Button disabled={disabledBid} on:click={handleExacto} variant="secondary">Exacto</Button>
-		<Button disabled={disabledBid} on:click={handleLiar} variant="destructive">Liar</Button>
-		<Button disabled={disabledBid} on:click={() => (showBid = !showBid)}>
-			{#if showBid}
-				- Bid
-			{:else}
-				+ Bid
-			{/if}
-		</Button>
+	<div class="flex justify-center">
+		<div
+			class="border-1 flex space-x-4 rounded-md border border-primary bg-neutral-400 bg-opacity-30 p-2"
+		>
+			<Button disabled={disabledBid} on:click={handleExacto} variant="secondary">Exacto</Button>
+			<Button disabled={disabledBid} on:click={handleLiar} variant="destructive">Liar</Button>
+			<Button disabled={disabledBid} on:click={() => (showBid = !showBid)}>
+				{#if showBid}
+					- Bid
+				{:else}
+					+ Bid
+				{/if}
+			</Button>
+		</div>
 	</div>
 </div>

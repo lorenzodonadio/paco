@@ -5,4 +5,6 @@
 	export let value: number[] | undefined;
 </script>
 
-<Slider bind:value bind:max bind:min step={1} />
+<div class="pb-2 pt-0.5">
+	<Slider bind:value bind:max bind:min step={1} />
+</div>

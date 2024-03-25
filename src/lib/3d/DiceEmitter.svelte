@@ -1,10 +1,10 @@
 <script lang="ts">
-	import { T, useThrelte } from '@threlte/core';
+	// import { T, useThrelte } from '@threlte/core';
 	// import { dicenum2rot, randDiceNumber, randRotation } from '$lib/utils/diceRotation';
 	import RigidDie from '$lib/3d/RigidDie.svelte';
 	import { delay } from '$lib/ts/myUtils';
 	import { diceAmount, diceConfig } from '$lib/state/dice';
-	const { renderer, scene, size, camera } = useThrelte();
+	// const { renderer, scene, size, camera } = useThrelte();
 </script>
 
 {#key $diceConfig}
